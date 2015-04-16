@@ -55,13 +55,13 @@ int insertTweet(				\
 		long   viewsCount       \
 );
 
-// return all tweets, NULL if there is none
+// return all tweets (array), NULL if there is none
 TWEET **requestAllTweets(char *fileName);
 
 // return a single tweet, using the ID number (RRN), NULL if RRN is invalid
 TWEET *requestTweet(char *fileName, int RRN);
 
-// return all tweets from a user using sequencial search, NULL if none found
+// return all tweets (array) from a user using sequencial search, NULL if none found
 TWEET **findTweetByUser(char *fileName, char *userName);
 
 // remove a tweet, using it's ID number
