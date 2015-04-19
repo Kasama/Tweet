@@ -68,7 +68,8 @@ TWEET **findTweetByUser(char *fileName, char *userName);
 // return SUCCESS if successful and ERROR if the register was not found
 int removeTweet(char *fileName, int RRN);
 
-// print a single tweet
-void printTweet(TWEET *tweet);
+// returns a string to be printed of a single tweet
+// needs to be freed
+char *printTweet(TWEET *tweet);
 
 #endif // TWEET_H
