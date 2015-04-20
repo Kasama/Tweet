@@ -30,7 +30,7 @@
 
 #define SPEC_PDF "http://wiki.icmc.usp.br/images/6/63/SCC0215012015projeto01TurmaBa.pdf"
 #define DOC_PDF "INSERT NAME HERE"
-#define TEACHER_NAME "Cristina Ciferre"
+#define PROFESSOR_NAME "Cristina Ciferre"
 
 
 #ifdef _WIN32
@@ -148,8 +148,8 @@ void cmdCredits(){
 			\n\
 			Using the specification from the PDF file available at:\n\
 			%s\n\
-			and the knowledge obtained from the classes from teacher %s\n\
-			---------------------------------------------------\n", SPEC_PDF, TEACHER_NAME);
+			and the knowledge obtained from the classes from the professor %s\n\
+			---------------------------------------------------\n", SPEC_PDF, PROFESSOR_NAME);
 }
 
 void cmdHelp(char *progname){
