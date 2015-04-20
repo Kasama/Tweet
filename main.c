@@ -32,16 +32,17 @@
 #define DOC_PDF "INSERT NAME HERE"
 #define TEACHER_NAME "Cristina Ciferre"
 
-#define CLEAR "clear"
-#define CD "cd"
-#define LS "ls"
-#define SEP "/"
 
 #ifdef _WIN32
 #define CLEAR "cls"
 #define CD "cd"
 #define LS "dir"
 #define SEP "\\"
+#else
+#define CLEAR "clear"
+#define CD "cd"
+#define LS "ls"
+#define SEP "/"
 #endif
 
 enum {
@@ -89,7 +90,7 @@ void cmdInsert(char *fileName){
 
 void cmdRemove(char *fileName){
 	int RRN, ret;
-	
+
 	printf("Type the ID (RRN) of the Tweet to be removed: ");
 	scanf("%d", &RRN);
 
@@ -140,15 +141,15 @@ void cmdRequest(char *fileName){
 void cmdCredits(){
 	printf("---------------------------------------------------\n");
 	printf("This program was made by:\n\
-* Frederico de Azevedo Marques - N USP: 8936926\n\
-* Henrique Martins Loschiavo   - N USP: 8936972\n\
-* Lucas Kassouf Crocomo        - N USP: 8937420\n\
-* Roberto Pommella Alegro      - N USP: 8936756\n\
-\n\
-Using the specification from the PDF file available at:\n\
-%s\n\
-and the knowledge obtained from the classes from teacher %s\n\
----------------------------------------------------\n", SPEC_PDF, TEACHER_NAME);
+			* Frederico de Azevedo Marques - N USP: 8936926\n\
+			* Henrique Martins Loschiavo   - N USP: 8936972\n\
+			* Lucas Kassouf Crocomo        - N USP: 8937420\n\
+			* Roberto Pommella Alegro      - N USP: 8936756\n\
+			\n\
+			Using the specification from the PDF file available at:\n\
+			%s\n\
+			and the knowledge obtained from the classes from teacher %s\n\
+			---------------------------------------------------\n", SPEC_PDF, TEACHER_NAME);
 }
 
 void cmdHelp(char *progname){
