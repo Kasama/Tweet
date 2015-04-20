@@ -1,3 +1,13 @@
+/*
+ * @Authors:
+ *
+ * Frederico de Azevedo Marques - 8936926
+ * Henrique Martins Loschiavo   - 8936972
+ * Lucas Kassouf Crocomo        - 8937420
+ * Roberto Pommella Alegro      - 8936756
+ *
+ */
+
 #include <stdlib.h>
 #include "tweet.h"
 
