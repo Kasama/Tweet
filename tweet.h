@@ -2,7 +2,7 @@
  * @Authors:
  *
  * Frederico de Azevedo Marques - 8936926
- * Henrique Martins Loschiavo   - 893
+ * Henrique Martins Loschiavo   - 8936972
  * Lucas Kassouf Crocomo        - 8937420
  * Roberto Pommella Alegro      - 8936756
  *
@@ -56,13 +56,15 @@ int insertTweet(				\
 );
 
 // return all tweets (array), NULL if there is none
-TWEET **requestAllTweets(char *fileName);
+// returns via pointer, the number of tweets found 0 if none
+TWEET **requestAllTweets(char *fileName, int *ammount);
 
 // return a single tweet, using the ID number (RRN), NULL if RRN is invalid
 TWEET *requestTweet(char *fileName, int RRN);
 
 // return all tweets (array) from a user using sequencial search, NULL if none found
-TWEET **findTweetByUser(char *fileName, char *userName);
+// returns via pointer, the number of tweets found 0 if none
+TWEET **findTweetByUser(char *fileName, char *userName, int *ammount);
 
 // remove a tweet, using it's ID number
 // return SUCCESS if successful and ERROR if the register was not found
