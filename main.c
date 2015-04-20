@@ -103,10 +103,10 @@ void cmdRemove(char *fileName){
 }
 
 void cmdRequest(char *fileName){
-	TWEET **tweets;
-	TWEET *tweet;
+	TWEET **tweets = NULL;
+	TWEET *tweet = NULL;
 	char cmd[CMD_LENGTH], buf[10*CMD_LENGTH];
-	int RRN, ammount, i;
+	int RRN, ammount = 0, i;
 
 	scanf("%s", cmd); 
 	if(strcmp(cmd, CMD_REQUEST_ALL) == 0){
@@ -141,15 +141,15 @@ void cmdRequest(char *fileName){
 void cmdCredits(){
 	printf("---------------------------------------------------\n");
 	printf("This program was made by:\n\
-			* Frederico de Azevedo Marques - N USP: 8936926\n\
-			* Henrique Martins Loschiavo   - N USP: 8936972\n\
-			* Lucas Kassouf Crocomo        - N USP: 8937420\n\
-			* Roberto Pommella Alegro      - N USP: 8936756\n\
-			\n\
-			Using the specification from the PDF file available at:\n\
-			%s\n\
-			and the knowledge obtained from the classes from the professor %s\n\
-			---------------------------------------------------\n", SPEC_PDF, PROFESSOR_NAME);
+* Frederico de Azevedo Marques - N USP: 8936926\n\
+* Henrique Martins Loschiavo   - N USP: 8936972\n\
+* Lucas Kassouf Crocomo        - N USP: 8937420\n\
+* Roberto Pommella Alegro      - N USP: 8936756\n\
+\n\
+Using the specification from the PDF file available at:\n\
+%s\n\
+and the knowledge obtained from the classes from the professor %s\n\
+---------------------------------------------------\n", SPEC_PDF, PROFESSOR_NAME);
 }
 
 void cmdHelp(char *progname){
