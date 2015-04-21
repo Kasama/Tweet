@@ -35,7 +35,7 @@
 			flag = 1;
 			break;
 		}
-		RRR++;
+		RRN++;
 	}
 
 	//Mesmo que o arquivo esteja vazio, o pornteiro escreve no começo.A(RRN == 0)(flag = 0)
