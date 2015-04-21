@@ -27,6 +27,7 @@
 #define CMD_LS "ls"
 #define CMD_CD "cd"
 #define CMD_PWD "pwd"
+#define CMD_MKDIR "mkdir"
 #define CMD_CHANGE_DATAFILE "cf"
 #define CMD_CLEAR "clear"
 #define CMD_HELP "help"
@@ -39,22 +40,21 @@
 // OS dependent functions
 #ifdef _WIN32
 #define CLEAR "cls"
-#define CD "cd"
 #define LS "dir"
-#define PWD "cd"
 #define SEP "\\"
 #define CHANGEDIR(X) _chdir(X)
-#define PRINTWORKINGDIRECTORY(X, Y) _getcwd(X, Y)
+#define WORKINGDIRECTORY(X, Y) _getcwd(X, Y)
+#define MKDIRECTORY(X, Y) _mkdir(X)
 #include <direct.h>
 #else
 #define CLEAR "clear"
-#define CD "cd"
 #define LS "ls"
-#define PWD "pwd"
 #define SEP "/"
 #define CHANGEDIR(X) chdir(X)
-#define PRINTWORKINGDIRECTORY(X, Y) getcwd(X, Y)
+#define WORKINGDIRECTORY(X, Y) getcwd(X, Y)
+#define MKDIRECTORY(X, Y) mkdir(X, Y)
 #include <unistd.h>
+#include <sys/stat.h>
 #endif
 
 enum {
@@ -241,6 +241,7 @@ void cmdHelp(char *progname){
 	printf("%s <fileName>\t\t- change the data file to the specified one\n", CMD_CHANGE_DATAFILE);
 	printf("%s\t\t\t- list all files in current directory\n", CMD_LS);
 	printf("%s\t\t\t- change the current directory\n", CMD_CD);
+	printf("%s <path>\t\t- create a new directory\n", CMD_MKDIR);
 	printf("%s\t\t\t- print the path of the current directory\n", CMD_PWD);
 	printf("%s\t\t\t- clear the screen \n", CMD_CLEAR);
 	printf("\n");
@@ -250,18 +251,28 @@ void cmdHelp(char *progname){
 
 }
 
+void cmdMkDir(){
+	char path[FILENAME_MAX];
+	scanf("%s", path);
+	MKDIRECTORY(path, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+
+}
+
 /**
  * A function that changes the currently in use file
  *
  * @param fileName - the name of the currently in use file
  *
  */
-void cmdCD(char *fileName){
+void cmdCF(char *fileName){
 	char fileN[FILENAME_MAX];
 	FILE *file;
 	printf("Currently open file: %s\n", fileName); 
 	printf("Type a new filename to open or press enter to keep current one (it will be created if it does not exist):\n");
-	scanf("%s", fileN);
+	fileN[0] = 0;
+	WORKINGDIRECTORY(fileN, sizeof fileN);
+	strcat(fileN, SEP);
+	scanf("%s", &fileN[strlen(fileN)]);
 	file = fopen(fileName, "a+");
 	if (file == NULL){
 		fprintf(stderr, "A problem was encountered when trying to open the file, will keep current one. Maybe check your permissions\n");
@@ -274,9 +285,12 @@ void cmdCD(char *fileName){
 }
 
 
+/**
+ * A function that prints the current working directory of the running application
+ */
 void cmdPWD(){
 	char buf[FILENAME_MAX];
-	printf("%s\n",PRINTWORKINGDIRECTORY(buf, sizeof buf));
+	printf("%s\n",WORKINGDIRECTORY(buf, sizeof buf));
 }
 
 /**
@@ -311,7 +325,7 @@ void cmdClear(){
  * @param argv - the command line arguments
  *
  * @variable cmd - the command typed by the user
- * @variable buf - a buffer, to consume the stdin buffer in case of a invalid command
+ * @variable buf - a temporary buffer for general use
  * @variable fileName - contains the name of the currently in use file
  * @variable file - used only to "touch" the file with fileName and check if its possible to open/create a file
  *
@@ -322,13 +336,17 @@ int main(int argc, char *argv[]){
 	char fileName[FILENAME_MAX];
 	FILE *file;
 
+	fileName[0] = 0;
+	strcat(fileName, WORKINGDIRECTORY(buf, sizeof buf));
+	strcat(fileName, SEP);
 	// if it was not passed as a command line argument, ask for the name of the file to work with
 	if (argc != 2){
 		printf("please input the name of a file to work with. it will be created if it does not exist:\n");
-		scanf("%s", fileName);
+		scanf("%s", buf);
 	}else{ // if it was, just put it in the fileName variable
-		strcpy(fileName, argv[FILENAME]);
+		strcpy(buf, argv[FILENAME]);
 	}
+	strcat(fileName, buf);
 	file = fopen(fileName, "a+"); // try to open the file for appending, creating it if needed (used to check if its possible to read/create files)
 	if (file == NULL){ // if its not possible, print an error and exit
 		fprintf(stderr, "A problem was encountered when trying to open a file, maybe check your permissions\n");
@@ -336,7 +354,7 @@ int main(int argc, char *argv[]){
 	}
 	fclose(file); // close the file, as we don't need it anymore
 
-	printf("~(%s)~> ", PRINTWORKINGDIRECTORY(buf, sizeof buf)); // a simple prompt with current working directory to wait for a command
+	printf("~(%s)~> ", WORKINGDIRECTORY(buf, sizeof buf)); // a simple prompt with current working directory to wait for a command
 
 	// read commands until EOF is reached (or the command typed is "exit"
 	while(scanf("%s", cmd) != EOF){
@@ -350,11 +368,13 @@ int main(int argc, char *argv[]){
 		}else if(strcmp(cmd, CMD_CREDITS) == 0){
 			cmdCredits();
 		}else if(strcmp(cmd, CMD_CHANGE_DATAFILE) == 0){
-			cmdCD(fileName);
+			cmdCF(fileName);
 		}else if(strcmp(cmd, CMD_CLEAR) == 0){
 			cmdClear();
 		}else if(strcmp(cmd, CMD_PWD) == 0){
 			cmdPWD();
+		}else if(strcmp(cmd, CMD_MKDIR) == 0){
+			cmdMkDir();
 		}else if(strcmp(cmd, CMD_CD) == 0){
 			cmdCd();
 		}else if(strcmp(cmd, CMD_LS) == 0){
@@ -368,7 +388,7 @@ int main(int argc, char *argv[]){
 			buf[strlen(buf)-1] = 0; // as fgets adds the \n to the buffer, we remove it
 			printf("Invalid command: %s%s, try typing '%s' for help\n", cmd, buf, CMD_HELP); // says that the command is not valid
 		}
-		printf("~(%s)~> ", PRINTWORKINGDIRECTORY(buf, sizeof buf)); //print the prompt again
+		printf("~(%s)~> ", WORKINGDIRECTORY(buf, sizeof buf)); //print the prompt again
 	}
 
 	return 0;
