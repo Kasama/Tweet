@@ -12,13 +12,15 @@
 	TWEET *tweet = NULL, aux = NULL;
 	int RRN = 0, flag = 0;//ler comentário abaixo...
 
-	if(favoriteCount < 0 || retweetCount < 0 || viewsCount < 0)
+	if(tweet->favoriteCount < 0 || tweet->retweetCount < 0 || tweet->viewsCount < 0)
 		return ERROR;	
 
 	tweetFile = fopen(filename, "a+");
-	tweet = (TWEET*) malloc(sizeof(TWEET));
+	if(tweetFile == NULL)
+		return ERROR;
 
-	if(tweetFile == NULL || tweet == NULL)
+	tweet = (TWEET*) malloc(sizeof(TWEET));
+	if(tweet == NULL)
 		return ERROR;	
 
 	//criando volume de escrita
@@ -35,7 +37,7 @@
 			flag = 1;
 			break;
 		}
-		RRR++;
+		RRN++;
 	}
 
 	//Mesmo que o arquivo esteja vazio, o pornteiro escreve no começo.A(RRN == 0)(flag = 0)
@@ -45,11 +47,18 @@
 	
 	if(flag){//se o flag for 1, vou transformar o RRN em bytes para poder colocar o ponteiro no lugar certo do arquivo
 		RRN *= sizeof(TWEET);
-		fsetpos(tweetFile, &RRN);
+		if(fsetpos(tweetFile, &RRN) == -1){
+			free(tweet);
+			fclose(tweetFile);
+			return ERROR;
+		}
 	}
 	//escrita no arquivo
-	fwrite(tweet, sizeof(TWEET), 1, tweetFile);
+	if(fwrite(tweet, sizeof(TWEET), 1, tweetFile) == 0){
+		free(tweet);
+		fclose(tweetFile);
+		return ERROR;	
+	}
 	fclose(tweetFile);
-
 	return SUCCESS;
  }
