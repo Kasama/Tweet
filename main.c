@@ -34,8 +34,7 @@
 
 #define SPEC_PDF "http://wiki.icmc.usp.br/images/6/63/SCC0215012015projeto01TurmaBa.pdf"
 #define DOC_PDF "INSERT NAME HERE"
-#define PROFESSOR_NAME "Cristina Ciferre"
-
+#define PROFESSOR_NAME "Cristina Aguiar Ciferre"
 
 // OS dependent functions
 #ifdef _WIN32
@@ -92,16 +91,16 @@ void cmdInsert(char *fileName){
 	printf("Please type a user name:\n");
 	scanf("\n"); //read a \n that is still in the buffer from the previous scanf
 	fgets(user, sizeof user, stdin);
-	user[strlen(user)-2] = 0; //fgets reads the \n to the string, so we need to remove it. Otherwise it would be inserted to the database
+	user[strlen(user)-1] = 0; //fgets reads the \n to the string, so we need to remove it. Otherwise it would be inserted to the database
 	printf("Type your geographic coordinates:\n");
 	fgets(coords, sizeof coords, stdin);
-	coords[strlen(coords)-2] = 0;
+	coords[strlen(coords)-1] = 0;
 	printf("Specify the language of your text:\n");
 	fgets(lang, sizeof lang, stdin);
-	lang[strlen(lang)-2] = 0;
+	lang[strlen(lang)-1] = 0;
 	printf("Type your text:\n");
 	fgets(text, sizeof text, stdin);
-	text[strlen(text)-2] = 0;
+	text[strlen(text)-1] = 0;
 	printf("Type how many favorites your tweet has:\n");
 	scanf("%d", &fav);
 	printf("Type how many views your tweet has:\n");
