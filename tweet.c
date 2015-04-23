@@ -404,7 +404,7 @@ char *printTweet(TWEET *tweet, char *fileName) {
 
 	// defines
 	#define TEXT_TEXT "Text: "
-	#define TEXT_USER "\nUser: "
+	#define TEXT_USER "\nUser: @"
 	#define TEXT_COORDS "\nCoordinates: "
 	#define TEXT_LANG "\nLanguage: "
 	#define TEXT_VIEWS "\nViews: "
