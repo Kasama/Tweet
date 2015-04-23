@@ -43,8 +43,10 @@ int insertTweet(
 		return ERROR;
 
 	tweet = (TWEET*) malloc(sizeof(TWEET));
-	if(tweet == NULL)
+	if(tweet == NULL){
+		fclose(tweetFile);
 		return ERROR;	
+	}
 
 	//creating data storage volume 
 	strcpy(tweet->text, text);
@@ -56,8 +58,11 @@ int insertTweet(
 	tweet->viewsCount = viewsCount;
 	
 	aux = (TWEET*) malloc(sizeof(TWEET));
-	if(aux == NULL)
-		return  ERROR;
+	if(aux == NULL){
+		free(tweet);
+		fclose(tweetFile);
+		return ERROR;
+	}
 
 	//seeks for a place to insert data
 	fseek(tweetFile, SEEK_SET, SEEK_SET);
