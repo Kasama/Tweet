@@ -7,11 +7,12 @@ char *printTweet(TWEET *tweet, char *fileName) {
 	char *favCount, *reCount, *viewCount, *RRN;
 	char *entireTweet;
 	int i, entries;
+	FILE *file;
 
 	favCount = malloc(sizeof(char) * 11);
 	reCount = malloc(sizeof(char) * 11);
 	RRN = malloc(sizeof(char) * 11);
-	viewCount = malloc(sizeof(char) * 20));
+	viewCount = malloc(sizeof(char) * 20);
 
 	sprintf(favCount, "%d", tweet->favoriteCount);
 	sprintf(reCount, "%d", tweet->retweetCount);
@@ -34,8 +35,10 @@ char *printTweet(TWEET *tweet, char *fileName) {
 	strcat(entireTweet, viewCount);
 	strcat(entireTweet, "\n");
 
-	entries = ftell(fileName);
+	file = fopen(fileName);
+	entries = ftell(file);
 	entries = entries / sizeof(TWEET);
+	fclose(file)
 
 	for(i = 0; i < entries; i++){
 		if(requestTweet(fileName, i) == tweet)
