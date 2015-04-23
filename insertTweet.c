@@ -18,7 +18,7 @@
  * @variable flag		- indicates that the write will replace an logical removed tweet
  *
  * @return SUCCESS if tweet insertion was successful, ERROR otherwise
- **/
+ */
 int insertTweet(				
 		char   *fileName,       
 		char   *text,           
