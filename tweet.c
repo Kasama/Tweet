@@ -254,8 +254,97 @@ RemoveFailedNoFile:
 
 }
 
-// returns a string to be printed of a single tweet
-// needs to be freed
-char *printTweet(TWEET *tweet){
-	return tweet->text;
+int equalTweet(TWEET* t1, TWEET* t2){
+
+	if(t1 == NULL || t2 == NULL)
+		return ERROR;
+	if(
+		strcmp(t1->coords, t2->coords) == 0 &&
+		strcmp(t1->userName, t2->userName) == 0 &&
+		strcmp(t1->text, t2->text) == 0 &&
+		strcmp(t1->language, t2->language) == 0 &&
+		t1->retweetCount == t2->retweetCount &&
+		t1->viewsCount == t2->viewsCount &&
+		t1->favoriteCount == t2->favoriteCount
+	) return SUCCESS;
+	return ERROR;
+
+}
+char *printTweet(TWEET *tweet, char *fileName) {
+
+	#define TEXT_TEXT "Text: "
+	#define TEXT_USER "\nUser: "
+	#define TEXT_COORDS "\nCoordinates: "
+	#define TEXT_LANG "\nLanguage: "
+	#define TEXT_VIEWS "\nViews: "
+	#define TEXT_FAV "\nFavorites: "
+	#define TEXT_RETWEETS "\nRetweets: "
+	#define TEXT_RRN "\nRRN: "
+	#define TEXT_INT 11
+	#define TEXT_LONG 20
+
+	#define SIZEOF_ENTIRETWEET \
+   	sizeof(TWEET) - (sizeof(int)*2) - sizeof(long) + sizeof(TEXT_TEXT) + sizeof(TEXT_USER) + sizeof(TEXT_COORDS) +\
+   	sizeof(TEXT_LANG) + sizeof(TEXT_VIEWS) + sizeof(TEXT_FAV) + sizeof(TEXT_RETWEETS) + sizeof(TEXT_RRN) + TEXT_INT*2 + TEXT_LONG
+
+	char *favCount, *reCount, *viewCount, *RRN;
+	char *entireTweet;
+	TWEET *recTweet;
+	int i, entries;
+	FILE *file;
+
+	if(tweet == NULL) return "\n";
+
+	favCount = malloc(sizeof(char) * TEXT_INT);
+	reCount = malloc(sizeof(char) * TEXT_INT);
+	RRN = malloc(sizeof(char) * TEXT_INT);
+	viewCount = malloc(sizeof(char) * TEXT_LONG);
+
+	sprintf(favCount, "%d", tweet->favoriteCount);
+	sprintf(reCount, "%d", tweet->retweetCount);
+	sprintf(viewCount, "%ld", tweet->viewsCount);
+
+	entireTweet = malloc(SIZEOF_ENTIRETWEET);
+	entireTweet[0] = 0;
+
+	strcat(entireTweet, TEXT_TEXT);
+	strcat(entireTweet, tweet->text);
+	strcat(entireTweet, TEXT_USER);
+	strcat(entireTweet, tweet->userName);
+	strcat(entireTweet, TEXT_COORDS);
+	strcat(entireTweet, tweet->coords);
+	strcat(entireTweet, TEXT_LANG);
+	strcat(entireTweet, tweet->language);
+	strcat(entireTweet, TEXT_VIEWS);
+	strcat(entireTweet, viewCount);
+	strcat(entireTweet, TEXT_FAV);
+	strcat(entireTweet, favCount);
+	strcat(entireTweet, TEXT_RETWEETS);
+	strcat(entireTweet, reCount);
+	strcat(entireTweet, TEXT_RRN);
+
+	file = fopen(fileName, "a");
+	entries = ftell(file);
+	entries = entries / sizeof(TWEET);
+	fclose(file);
+
+	for(i = 0; i < entries; i++){
+		recTweet = requestTweet(fileName, i);
+		if(equalTweet(recTweet, tweet) == SUCCESS){
+			free(recTweet);
+			break;
+		}
+		free(recTweet);
+	}
+
+	sprintf(RRN, "%d", i);
+	strcat(entireTweet, RRN);
+	strcat(entireTweet, "\n");
+
+	free(favCount);
+	free(reCount);
+	free(viewCount);
+	free(RRN);
+
+	return entireTweet;
 }

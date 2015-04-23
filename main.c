@@ -164,7 +164,7 @@ void cmdRemove(char *fileName){
 void cmdRequest(char *fileName){
 	TWEET **tweets = NULL;
 	TWEET *tweet = NULL;
-	char cmd[CMD_LENGTH], buf[10*CMD_LENGTH];
+	char cmd[CMD_LENGTH], buf[10*CMD_LENGTH], *toPrint;
 	int RRN, ammount = 0, i;
 
 	// reads the next part of the request command
@@ -189,14 +189,18 @@ void cmdRequest(char *fileName){
 	}else{
 		if(tweet == NULL){ // check if the ran command returned a array of tweets or a single one
 			for(i = 0; i < ammount; i++){ // print the array of tweets
-				printf(printTweet(tweets[i]));
+				toPrint = printTweet(tweets[i], fileName);
+				printf("%s", toPrint);
 				printf("---------------------------------------------------\n");
+				free(toPrint);
 				free(tweets[i]); // free every tweet
 			}
 			free(tweets); // free the base structure
 		}else{
-			printf(printTweet(tweet)); // print a single tweet
+			toPrint = printTweet(tweet, fileName);
+			printf("%s", toPrint);
 			printf("---------------------------------------------------\n");
+			free(toPrint);
 			free(tweet); // free that tweet
 		}
 	}
