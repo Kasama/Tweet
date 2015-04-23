@@ -72,6 +72,6 @@ int removeTweet(char *fileName, int RRN);
 
 // returns a string to be printed of a single tweet
 // needs to be freed
-char *printTweet(TWEET *tweet);
+char *printTweet(TWEET *tweet, char *fileName);
 
 #endif // TWEET_H
