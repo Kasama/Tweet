@@ -132,7 +132,6 @@ void cmdInsert(char *fileName){
 void cmdRemove(char *fileName){
 	int RRN, ret;
 
-	printf("Type the ID (RRN) of the Tweet to be removed: ");
 	scanf("%d", &RRN);
 
 	// call the function to remove the tweet using the RRN

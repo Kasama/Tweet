@@ -96,11 +96,11 @@ int insertTweet(\
 	//seeks for a place to insert data
 	fseek(tweetFile, SEEK_SET, SEEK_SET);
 	while(fread(aux, sizeof(TWEET), 1, tweetFile) > 0 ){
+		RRN++;
 		if(aux->favoriteCount == -1 && aux->retweetCount == -1  && aux->viewsCount == -1){
 			flag = 1;
 			break;
 		}
-		RRN++;
 	}
 
 	//Even on an empty file, the file's pointer writes on file's begin. (RRN = 0)(flag = 0)
