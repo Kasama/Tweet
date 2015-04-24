@@ -35,7 +35,7 @@
 #define CMD_HELP "help"
 
 #define SPEC_PDF "http://wiki.icmc.usp.br/images/6/63/SCC0215012015projeto01TurmaBa.pdf"
-#define DOC_PDF "INSERT NAME HERE"
+#define DOC_PDF "https://www.github.com/Kasama/Tweet/"
 #define PROFESSOR_NAME "Cristina Dutra de Aguiar Ciferri"
 
 // OS dependent functions
@@ -134,7 +134,6 @@ void cmdInsert(char *fileName){
 void cmdRemove(char *fileName){
 	int RRN, ret;
 
-	printf("Type the ID (RRN) of the Tweet to be removed: ");
 	scanf("%d", &RRN);
 
 	// call the function to remove the tweet using the RRN
@@ -250,7 +249,7 @@ void cmdHelp(char *progname){
 	printf("%s\t\t\t- print the path of the current directory\n", CMD_PWD);
 	printf("%s\t\t\t- clear the screen \n", CMD_CLEAR);
 	printf("\n");
-	printf("Further documentation can be found at: \n");
+	printf("Further documentation can be found in the public repository at: \n");
 	printf("%s\n", DOC_PDF);
 	printf("---------------------------------------------------\n");
 
